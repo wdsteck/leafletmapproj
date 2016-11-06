@@ -1,0 +1,36 @@
+---
+title: "Presidential Birthplaces"
+author: "Bill Martersteck"
+date: "11/6/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r, echo=FALSE}
+library(leaflet)
+
+df <- read.csv("president.csv", stringsAsFactors = FALSE)
+
+wikipages <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", x = df$President))
+wikilink <- paste0("<a href='", wikipages, "'>", df$President, "</a>")
+
+birthpopup <- paste0(df$Number,". ", wikilink, "<br>","Born: ", df$Date.of.birth,"<br>", df$Birthplace,", ", df$State)
+
+presidentIcons <- makeIcon(
+  iconUrl = paste0("President Portraits/", gsub(" ", "_", x = df$President), ".jpg"),
+  iconWidth = 62*215/230, iconHeight = 62,
+  iconAnchorX = 62*215/230/2, iconAnchorY = 31
+)
+
+df %>%
+  leaflet() %>% 
+  addTiles() %>%
+  addMarkers(lat = df$lat, lng = df$lng,
+             popup = birthpopup,
+             icon = presidentIcons,
+             clusterOptions = markerClusterOptions())
+```
