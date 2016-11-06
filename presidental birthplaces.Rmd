@@ -18,7 +18,10 @@ df <- read.csv("president.csv", stringsAsFactors = FALSE)
 wikipages <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", x = df$President))
 wikilink <- paste0("<a href='", wikipages, "'>", df$President, "</a>")
 
-birthpopup <- paste0(df$Number,". ", wikilink, "<br>","Born: ", df$Date.of.birth,"<br>", df$Birthplace,", ", df$State)
+birthpopup <- paste0(df$Number,". ", wikilink, "<br>Born: ", df$Date.of.birth,
+                     "<br>", df$Birthplace,", ", df$State,
+                     "<br>In Office: ", df$In.office,
+                     "<br>Party: ", df$Party)
 
 presidentIcons <- makeIcon(
   iconUrl = paste0("President Portraits/", gsub(" ", "_", x = df$President), ".jpg"),
